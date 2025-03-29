@@ -6,9 +6,7 @@ import axios from "axios"
 export default function SignInButton() {
     return (<>
         <Button onClick={() => {
-
-            window.location.href = "http://localhost:8080/auth/initiate/google";
-
+            window.location.href = "http://localhost:8080/auth/google/initiate";
         }}>Sign In </Button>
     </>)
 }
