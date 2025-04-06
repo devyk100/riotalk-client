@@ -30,7 +30,7 @@ api.interceptors.response.use(
     (response: AxiosResponse) => response, // If response is OK, return it
     async (error) => {
       const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
-  
+
       // If unauthorized (403 or 401)
       if ((error.response?.status === 403 || error.response?.status === 401) && !originalRequest._retry) {
         if (isRefreshing) {

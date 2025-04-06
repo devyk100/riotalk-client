@@ -1,9 +1,13 @@
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable"
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import ServerSideBar from "@/components/server-sidebar";
-import { ChannelSidebar } from "@/components/channel-sidebar";
+import { ThemeProvider } from "@/components/provider/theme-provider";
+import CustomQueryClientProvider from "@/components/provider/query-client-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,21 +31,26 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          > 
-            <main className="flex h-screen w-screen">
-            <ServerSideBar />
-            <ChannelSidebar  />
-            {children}
-            </main>
-          </ThemeProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <CustomQueryClientProvider>
+            <>
+              {children}
+            </>
+          </CustomQueryClientProvider>
+
+        </ThemeProvider>
       </body>
     </html>
   );

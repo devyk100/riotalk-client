@@ -1,6 +1,7 @@
 import { api } from "./axios-setup";
+import { RefreshToken } from "./refresh-token";
 
-type UserInfo_t = {
+export type UserInfo_t = {
     name: string;
     email: string;
     img: string;
@@ -27,5 +28,6 @@ export function GetUserInfo(): UserInfo_t {
         return JSON.parse(sessionStorage.getItem('user_info')!)
     } else {
         throw Error();
+
     }
 }
