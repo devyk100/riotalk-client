@@ -12,7 +12,7 @@ export default function ChatFragment({message}: {message: Message_t}) {
     
     const ts = typeof message.time_at === "bigint" ? Number(message.time_at) : message.time_at;
     const millis = ts > 1e12 ? ts : ts * 1000; // handle seconds vs millis
-  
+    //@ts-ignore
     const localTime = new Date(millis).toLocaleString(undefined, format);
     return (
         <>
