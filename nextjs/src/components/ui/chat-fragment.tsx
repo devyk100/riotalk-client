@@ -1,4 +1,4 @@
-import { Event, Message_t } from "@/util/create-chat-event";
+import { Message_t } from "@/util/create-chat-event";
 
 export default function ChatFragment({message}: {message: Message_t}) {
     const format = {

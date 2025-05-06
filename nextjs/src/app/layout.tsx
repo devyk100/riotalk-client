@@ -8,6 +8,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/provider/theme-provider";
 import CustomQueryClientProvider from "@/components/provider/query-client-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,7 +37,7 @@ export default function RootLayout({
 
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden overflow-y-hidden`}
       >
         <ThemeProvider
           attribute="class"
@@ -47,9 +48,9 @@ export default function RootLayout({
           <CustomQueryClientProvider>
             <>
               {children}
+              <Toaster />
             </>
           </CustomQueryClientProvider>
-
         </ThemeProvider>
       </body>
     </html>

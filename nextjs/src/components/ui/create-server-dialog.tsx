@@ -17,6 +17,7 @@ import { useRef, useState } from "react";
 import { api } from "@/util/axios-setup";
 import { Textarea } from "./textarea";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function CreateServerDialog() {
     const [isWorking, setIsWorking] = useState(false)
@@ -26,9 +27,10 @@ export default function CreateServerDialog() {
     const inputDescRef = useRef<HTMLTextAreaElement>(null)
     const [open, setOpen] = useState(false);
     const router = useRouter()
+    const queryClient = useQueryClient()
     return (<>
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger>
+            <DialogTrigger className="border-gray-600 border-t-[0.5px] p-2 ">
                 <PlusCircle />
             </DialogTrigger>
             <DialogContent>
@@ -38,7 +40,7 @@ export default function CreateServerDialog() {
                         Create an organized server to chat, discuss and hangout with people!
                     </DialogDescription>
                 </DialogHeader>
-                <div className="grid gap-4 py-4">
+                <div className="grid gap-4 py-4 border-t-2">
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="name" className="text-right">
                             Name
@@ -77,7 +79,12 @@ export default function CreateServerDialog() {
                             });
                             console.log(data)
                             setIsWorking(false)
-                            router.push("/chat/"+data.data.id)
+                            if(data.data.id) {
+                                queryClient.invalidateQueries({
+                                    queryKey: ["servers"]
+                                })
+                                router.push("/chat/"+data.data.id)
+                            }
                             setOpen(false); 
                         })()
                     }}>{isWorking ? "Creating..." : "Create"}</Button>

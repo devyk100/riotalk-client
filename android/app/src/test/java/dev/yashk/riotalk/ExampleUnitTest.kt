@@ -1,4 +1,4 @@
-package com.example.riotalk
+package dev.yashk.riotalk
 
 import org.junit.Test
 

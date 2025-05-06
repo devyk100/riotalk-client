@@ -14,11 +14,6 @@ export default function useWebSocket() {
         event: "auth",
         token,
       }));
-      socket.send(JSON.stringify({
-        event: "history",
-        type: "user",
-        of: 5,
-      }))
     };
 
     socket.onclose = () => {

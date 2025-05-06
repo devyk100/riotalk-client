@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "RioTalk"
+rootProject.name = "android"
 include(":app")

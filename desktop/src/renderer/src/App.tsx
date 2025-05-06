@@ -1,5 +1,4 @@
 import { ThemeProvider } from "./components/theme-provider"
-import { Button } from "./components/ui/button"
 import MainPage from "./pages/main-page"
 
 function App(): JSX.Element {
@@ -11,7 +10,6 @@ function App(): JSX.Element {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <MainPage />
     </ThemeProvider>
-
     </>
   )
 }
