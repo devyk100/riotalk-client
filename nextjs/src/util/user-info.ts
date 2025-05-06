@@ -28,6 +28,5 @@ export function GetUserInfo(): UserInfo_t {
         return JSON.parse(sessionStorage.getItem('user_info')!)
     } else {
         throw Error();
-
     }
 }

@@ -16,22 +16,10 @@ import { useToast } from "@/hooks/use-toast";
 export default function ChatPane() {
     const { serverId, channelId } = useParams();
     const chatInputRef = useRef<HTMLInputElement>(null)
-    // const ws = useWebSocket()
     const { socket: ws, connect, setOnMessage } = useWebSocketStore()
     const router = useRouter()
     const { activeChannel } = useChannelStore()
-    const { data: chats, isLoading, error } = useQuery({
-        queryKey: ['chats', serverId, channelId],
-        queryFn: async () => {
-            const response = await api.get(`/channels/chats`, {
-                params: { server_id: serverId, channel_id: channelId },
-            })
-            return response.data
-        },
-        enabled: !!serverId && !!channelId,
-    })
-    const { toast } = useToast()
-
+    
     function handleChatSend(event: FormEvent) {
         event.preventDefault()
         try {
@@ -62,19 +50,46 @@ export default function ChatPane() {
         }
     }
 
+    const fetchChats = async ({before = null}: {
+        before: null | Number
+    }) => {
+        const res = await api.get(`/channels/chats?channel_id=${channelId}${before ? `&before=${before}` : ""}`);
+        return res.data
+    }
+
+    const { data: chats, isLoading, error } = useQuery({
+        queryKey: ['chats', serverId, channelId],
+        queryFn: async () => {
+            const response = await api.get(`/channels/chats`, {
+                params: { server_id: serverId, channel_id: channelId },
+            })
+            return response.data
+        },
+        enabled: !!serverId && !!channelId,
+    })
+
+    const { toast } = useToast()
     useEffect(() => {
-        connect()
+        connect();
+        (async () => {
+            const response = await api.get(`/channels/chats`, {
+                params: { server_id: serverId, channel_id: channelId, before: 1746513353624 },
+            })
+            console.log(response)
+        })()
         setOnMessage((event: MessageEvent) => {
             const data = JSON.parse(event.data);
             console.log("Message from server:", data);
         });
     })
+
+    
     return (<>
         <div className="md:w-[80%] bottom-0 flex flex-col justify-between overflow-hidden h-full">
             <ScrollArea className="">
                 {chats?.map((val: Message_t) => {
-                    console.log(val)
-                    return <ChatFragment message={{ from_id: val.from_id, from_name: val.from_name, from_username: val.from_username, content: val.content, from_img: val.from_img, message_type: val.message_type, reply_of: val.reply_of, time_at: val.time_at }} />
+                    // console.log(val)
+                    return <ChatFragment key={val.time_at} message={{ from_id: val.from_id, from_name: val.from_name, from_username: val.from_username, content: val.content, from_img: val.from_img, message_type: val.message_type, reply_of: val.reply_of, time_at: val.time_at }} />
                 })}
             </ScrollArea>
             <form className="border-t h-[100px] items-center gap-2 flex border-gray-700 px-4 py-3" onSubmit={handleChatSend}>
